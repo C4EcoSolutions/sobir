@@ -16,7 +16,7 @@ a data frame of the two vectors with the boundary points and other relevant data
 }
 \description{
 extract_bpts identifies the boundary points to a scatterplot and labels the
-relevant data for further analysis in the blair package.
+relevant data for further analysis in the sobir package.
 }
 \examples{
 a = rnorm(100,0,1)

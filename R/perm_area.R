@@ -1,3 +1,4 @@
+
 ############## 8. Calculate permuted polygon areas ##############
 
 
@@ -60,18 +61,18 @@ perm_area = function(xdat, ydat, nsim){
   # Create tidy dataframe for the simulated areas
   result_df = as.data.frame(result)
   colnames(result_df) = c("botr", "topl", "topr")
-  df_tidy = result_df %>% gather(polygon, val)
+  df_tidy = gather(result_df, polygon, val)
   df_tidy$source = "sim"
 
   # Calculate observed area
   obs_area = suppressWarnings(calc_area(xdat, ydat))
 
   # Create tidy dataframe for the observed areas
-  obs_tidy = as.data.frame(obs_area) %>% gather(polygon, val)
+  obs_tidy = gather(as.data.frame(obs_area), polygon, val)
   obs_tidy$source = "obs"
 
   # Collate the df
   collated_tidy = rbind.data.frame(df_tidy, obs_tidy)
-  collated_tidy$rescale = rescale(collated_tidy$val)
+  collated_tidy$rescale = scales::rescale(collated_tidy$val)
   return(collated_tidy)
 }

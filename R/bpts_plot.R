@@ -24,7 +24,7 @@
 #' bptsExample = extract_bpts(a,b)
 #' bpts_plot(bptsExample, "a", "b")
 bpts_plot = function(bpts, xlab = "", ylab = "", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE){
-
+  
   if(colour == TRUE){
     bpts_graph = ggplot(data = bpts, aes(x = x, y=y, fill = legend))+
       geom_polygon(data = subset(bpts, type == "topl_poly"), fill = "blue", alpha = 0.3) +

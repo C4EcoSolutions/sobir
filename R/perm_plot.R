@@ -1,3 +1,4 @@
+
 ############## 9. Calculate the significance of and plot the permuted ploygons ##############
 ## Calculate the significance of the observed area
 
@@ -25,15 +26,15 @@ perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
 
   botr_pos = perm[perm$polygon == "botr",2] >= perm[perm$source == "obs",2][[1]]
   # botr_perc = (sum(botr_pos) + 1) / (nsim + 1)
-  botr_perc = permp(x = sum(botr_pos), nperm = nsim, n = n, n2 = n2, method = method)
+  botr_perc = statmod::permp(x = sum(botr_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
   topl_pos = perm[perm$polygon == "topl",2] >= perm[perm$source == "obs",2][[2]]
   # topl_perc = (sum(topl_pos) + 1) / (nsim + 1)
-  topl_perc = permp(x = sum(topl_pos), nperm = nsim, n = n, n2 = n2, method = method)
+  topl_perc = statmod::permp(x = sum(topl_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
   topr_pos = perm[perm$polygon == "topr",2] >= perm[perm$source == "obs",2][[3]]
   # topr_perc = (sum(topr_pos) + 1) / (nsim + 1)
-  topr_perc = permp(x = sum(topr_pos), nperm = nsim, n = n, n2 = n2, method = method)
+  topr_perc = statmod::permp(x = sum(topr_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
   # Function to rename the facet headings
   poly_names = list('topl' = paste0("Upper left: p = ", round(topl_perc, 4)),
@@ -50,7 +51,7 @@ perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
   OD = perm[perm$source == "obs",]
 
   if(histogram == F) {
-    suppressWarnings(ggplot(dat = perm, aes(x = rescale, ..scaled..)) +
+    suppressWarnings(ggplot(data = perm, aes(x = rescale, ..scaled..)) +
                        # geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_density(fill = "grey") +
                        geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
@@ -61,7 +62,7 @@ perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
     )
   } else {
 
-    suppressWarnings(ggplot(dat = perm, aes(x = rescale)) +
+    suppressWarnings(ggplot(data = perm, aes(x = rescale)) +
                        geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +

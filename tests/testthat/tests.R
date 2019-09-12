@@ -33,23 +33,23 @@ test_that("calc_area should return a list of the three no-data zone areas unsing
 
 context("perm_area")
 
-test_that("perm_area should calculate the no-data zone areas for each permutation of the data simulated nsim times"{
+test_that("perm_area should calculate the no-data zone areas for each permutation of the data simulated nsim times",{
   set.seed(0)
   a = rnorm(20,0,1)
   b = rnorm(20,0,1)
   bperm = perm_area(a,b,5)
-  expect_lt(bperm[6,4], 0.04)
-  expect_gt(bperm[6,4], 0.03)
+  expect_lt(bperm[7,4], 0.03)
+  expect_gt(bperm[7,4], 0.02)
 })
 
 context("perm_plot")
 
-test_that("perm_plot should calculate the significance of the observed no-data zones and plot them relative to the simulations"{
+test_that("perm_plot should calculate the significance of the observed no-data zones and plot them relative to the simulations",{
   set.seed(0)
   a = rnorm(20,0,1)
   b = rnorm(20,0,1)
   bperm = perm_area(a,b,5)
   bpplot = perm_plot(bperm,20)
-  expect_lt(bpplot$plot_env$botr_perc, 0.5)
-  expect_gt(bpplot$plot_env$botr_perc, 0.4)
+  expect_lt(bpplot$plot_env$botr_perc, 0.3)
+  expect_gt(bpplot$plot_env$botr_perc, 0.2)
 })

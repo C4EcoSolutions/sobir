@@ -11,6 +11,8 @@
 #' @param ydat a vector of the dependent data
 #'
 #' @return a list of the no-data zone areas
+#' @import tidyr
+#' @export
 #'
 #' @examples
 #' a = rnorm(100,0,1)
@@ -42,18 +44,20 @@ calc_area = function(xdat, ydat){
   botr_coords = cbind(botr_xcoord, botr_ycoord)+90
 
   # Create a Polygons
-  p = Polygon(topl_coords)
-  topl_poly = Polygons(list(p), 1)
+  p = sp::Polygon(topl_coords)
+  topl_poly = sp::Polygons(list(p), 1)
 
-  p = Polygon(topr_coords)
-  topr_poly = Polygons(list(p), 1)
+  p = sp::Polygon(topr_coords)
+  topr_poly = sp::Polygons(list(p), 1)
 
-  p = Polygon(botr_coords)
-  botr_poly = Polygons(list(p), 1)
+  p = sp::Polygon(botr_coords)
+  botr_poly = sp::Polygons(list(p), 1)
 
   # Extract areas
   area_topl = topl_poly@area
   area_topr = topr_poly@area
   area_botr = botr_poly@area
   output <<- list(botr = area_botr, topl = area_topl, topr = area_topr)
+  
+  return(output)
 }

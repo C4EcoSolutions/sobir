@@ -15,7 +15,7 @@ calc_area(xdat, ydat)
 a list of the no-data zone areas
 }
 \description{
-This function supports the other blair functions by calculating the no-data zone areas
+This function supports the other sobir functions by calculating the no-data zone areas
 }
 \examples{
 a = rnorm(100,0,1)

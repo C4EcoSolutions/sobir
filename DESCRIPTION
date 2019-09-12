@@ -1,18 +1,19 @@
 Package: sobir
 Type: Package
 Title: Significance of Boundaries in R
-Version: 0.1.0
+Version: 0.1.1
 Author: Ruan de Wet and Dirk Snyman
-Maintainer: Ruan de Wet <r.pkg.maintenance@gmail.com>
+Maintainer: Ruan de Wet <ruan.de.wet@c4es.co.za>
 Description: This package is intended to separate significant boundary contraints in a dataset from illusions. More details to be inserted at a later stage.
-License: GNU General Public License
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: testthat
 Imports: 
     ggplot2, 
-    tidyr, 
     raster, 
-    scales, 
-    statmod
+    scales,
+    sp,
+    statmod,
+    tidyr

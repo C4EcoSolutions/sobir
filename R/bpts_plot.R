@@ -17,6 +17,7 @@
 #' @return a ggplot2 scatterplot
 #' @import ggplot2
 #' @importFrom rlang .data
+#' @importFrom dplyr filter
 #' @export
 #'
 #' @examples
@@ -25,54 +26,38 @@
 #' bptsExample = extract_bpts(a,b)
 #' bpts_plot(bptsExample, "a", "b")
 
-bpts_plot = function(bpts, xlab = "", ylab = "", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE){
+bpts_plot = function(bpts, xlab = "x", ylab = "y", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE, legend.position = "none"){
+
   
-  if(colour == TRUE){
-    bpts_graph = ggplot(data = bpts, aes(x = .data$x, y = .data$y, fill = .data$legend))+
-      geom_polygon(data = subset(bpts, .data$type == "topl_poly"), fill = "blue", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, .data$type == "topr_poly"), fill = "red", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, .data$type == "botr_poly"), fill = "green", alpha = 0.3) +
-      geom_point(data = subset(bpts, .data$legend == "4"), shape = 21, alpha = 0.5) +
-      geom_point(data = subset(bpts, .data$legend == "3"), shape = 21) +
-      geom_line(data = subset(bpts, .data$legend == "3"), col = "green") +
-      geom_point(data = subset(bpts, .data$legend == "1"), shape = 21) +
-      geom_line(data = subset(bpts, .data$legend == "1"), col = "blue") +
-      geom_point( data = subset(bpts, .data$legend == "2"), shape = 21) +
-      geom_line(data = subset(bpts, .data$legend == "2"), col = "red") +
-      scale_fill_manual(values = c("blue","red","green","grey"), name = "Legend",
-                        labels = c("Top left boundary",  "Top right boundary",
-                                   "Bottom right boundary", "Non-boundary points")) +
-      labs(x = xlab,
-           y = ylab) +
-      theme_classic()
-  } else {
+ bpts_baseplot = ggplot(data = filter(bpts, !legend %in% c(0, 6)), aes(x, y)) +
+    
+    geom_point(shape = 21, fill = "grey", alpha = 0.5) +
+    
+    geom_polygon(data = dplyr::filter(bpts, legend == 0), 
+                 aes(fill = type), alpha = 0.3, show.legend = F) +
+    geom_line(data = dplyr::filter(bpts, legend %in% 1:4), 
+              aes(col = type, linetype = type)) +
+    geom_point(data = dplyr::filter(bpts, legend %in% 1:4), 
+               aes(fill = type), shape = 21) +
+    
+    scale_linetype_manual(values = c(1, 2, 3, 4), name = "No-data boundaries") +
+   
+   labs(x = xlab, y = ylab) +
 
-    bpts_graph = ggplot(data = bpts, aes(x = .data$x, y = .data$y, fill = .data$legend))+
-      geom_polygon(data = subset(bpts, .data$type == "topl_poly"), fill = "grey", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, .data$type == "topr_poly"), fill = "grey", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, .data$type == "botr_poly"), fill = "grey", alpha = 0.3) +
-
-      geom_line(data = subset(bpts, .data$legend == "3"), col = "darkgrey", linetype = "dotted") +
-      geom_line(data = subset(bpts, .data$legend == "1"), col = "darkgrey") +
-      geom_line(data = subset(bpts, .data$legend == "2"), col = "darkgrey", linetype = "longdash") +
-
-      geom_point(data = subset(bpts, .data$legend == "4"), col = "black") +
-
-      geom_point(data = subset(bpts, .data$legend == "3"), col = "black") +
-      geom_point(data = subset(bpts, .data$legend == "1"), col = "black") +
-      geom_point( data = subset(bpts, .data$legend == "2"),col = "black") +
-
-      scale_fill_manual(values = c("black","black","black","black"), name = "Legend",
-                        labels = c("Top left boundary",  "Top right boundary",
-                                   "Bottom right boundary", "Non-boundary points")) +
-
-      labs(x = xlab,
-           y = ylab) +
-
-      theme_bw() +
-      theme(legend.position = "none")
-  }
-
-  ifelse(save_plot == FALSE, return(bpts_graph), ggsave(export_name))
-
+    theme_bw() +
+   theme(legend.position = legend.position)
+ 
+ if(colour == TRUE){
+   bpts_graph = bpts_baseplot +
+    scale_fill_brewer(type = "qual", name = "No-data boundaries", palette = "Set1", direction = -1) +
+    scale_color_brewer(type = "qual", name = "No-data boundaries", palette = "Set1", direction = -1) 
+ } else {
+   bpts_graph = bpts_baseplot +
+    scale_fill_manual(name = "No-data boundaries", values = rep("darkgrey", times = 4)) +
+    scale_color_manual(name = "No-data boundaries", values = rep("black", times = 4))
+ }
+ 
+ ifelse(save_plot == FALSE, return(bpts_graph), ggsave(export_name))
+  
 }
+

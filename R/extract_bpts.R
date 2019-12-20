@@ -12,6 +12,7 @@
 #' @return a data frame of the two vectors with the boundary points and other relevant data labelled.
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
+#' @importFrom dplyr mutate
 #' @export
 #'
 #' @examples
@@ -25,20 +26,22 @@ extract_bpts = function(xdat, ydat) {
 
   voi_dat <- cbind.data.frame(x,y)
   voi_dat <- na.omit(voi_dat)
+  voi_n = nrow(voi_dat)
 
   #########################################################################
 
   ### topright
-  voi_ordered <- voi_dat[order(-voi_dat$y),]
+  voi_ordered_y <- voi_dat[order(-voi_dat$y),]
   binned_points <- {}
   topr <- {}
+  
+  binned_points[[1]] <- voi_ordered_y 
+  topr[[1]] <- binned_points[[1]][1,]
   for(i in 2:100){
-    binned_points[[1]] <- voi_ordered
     binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,1] > binned_points[[i-1]][1,1]),]
     ##binned_points##
-    topr[[1]] <- binned_points[[1]][1,]
     topr[[i]] <- binned_points[[i]][1,]
-    topr
+    # topr
   }
   topr <- do.call("rbind.data.frame", topr)
   topr <- na.omit(topr)
@@ -47,75 +50,110 @@ extract_bpts = function(xdat, ydat) {
 
   ### topleft
   topl <- {}
+  binned_points[[1]] <- voi_ordered_y 
+  topl[[1]] <- binned_points[[1]][1,]
   for(i in 2:100){
-    binned_points[[1]] <- voi_ordered
     binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,1] < binned_points[[i-1]][1,1]),]
     ##binned_points##
-    topl[[1]] <- binned_points[[1]][1,]
     topl[[i]] <- binned_points[[i]][1,]
-    topl
+    # topl
   }
   topl <- do.call("rbind.data.frame", topl)
   topl <- na.omit(topl)
 
   ######################################################################
   ### bottomright
-  voi_ordered_botr <- voi_dat[order(-voi_dat$x),]
+  voi_ordered_x <- voi_dat[order(-voi_dat$x),]
   botr <- {}
+  binned_points[[1]] <- voi_ordered_x
+  botr[[1]] <- binned_points[[1]][1,]
   for(i in 2:100){
-    binned_points[[1]] <- voi_ordered_botr
     binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,2] < binned_points[[i-1]][1,2]),]
     ##binned_points##
-    botr[[1]] <- binned_points[[1]][1,]
     botr[[i]] <- binned_points[[i]][1,]
-    botr
+    # botr
   }
 
   botr <- do.call("rbind.data.frame", botr)
   botr <- na.omit(botr)
   botr = botr[order(botr$y),]
   botr = botr[order(botr$x),]
+  
+  ######################################################################
+  ### bottomleft
+  voi_ordered_ymin <- dplyr::arrange(voi_dat, y, x)
+  botl <- {}
+  binned_points[[1]] <- voi_ordered_ymin
+  botl[[1]] <- binned_points[[1]][1,]
+  for(i in 2:100){
+    if (binned_points[[i-1]][1,2] == binned_points[[i-1]][2,2]) {
+      
+      binned_points[[i]] <- binned_points[[i-1]][-1,]
+      
+    } else {
+      
+      binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,2] < binned_points[[i-1]][1,2]),]
+      
+    }
+    ##binned_points##
+    botl[[i]] <- binned_points[[i]][1,]
+    # botl
+  }
+  
+  botl <- do.call("rbind.data.frame", botl)
+  botl <- na.omit(botl)
+  
+  last_extreme = binned_points[[1]][1,]
+  binned_points[[1]][-1,]
 
 
   #####################################################################
 
   # Label the boundary points
+  botl$type = "botl"
   botr$type = "botr"
   topl$type = "topl"
   topr$type = "topr"
-  voi_ordered$type = "datum"
+  voi_dat$type = "datum"
 
   # Provide legend orders to the boundary points
+  botl$legend = "4"
   botr$legend = "3"
   topl$legend = "1"
   topr$legend = "2"
-  voi_ordered$legend = "4"
+  voi_dat$legend = "5"
 
   # Combine the respective outputs into one data frame
-  collated = rbind(topl, topr, botr, voi_ordered)
+  collated = rbind(topl, topr, botr, botl, voi_dat)
 
   ### Define the extreme corners
 
-  corners = matrix(NA, 3, 4)
+  corners = matrix(NA, 4, 4)
   colnames(corners) = c("x", "y", "type", "legend")
 
   # Top left corner
   corners[1,1] = min(collated[collated$type == "topl", 1])
   corners[1,2] = max(collated[collated$type == "topl", 2])
   corners[1,3] = "topl_corner"
-  corners[1,4] = "5"
+  corners[1,4] = "6"
 
   # Top right corner
   corners[2,1] = max(collated[collated$type == "topr", 1])
   corners[2,2] = max(collated[collated$type == "topr", 2])
   corners[2,3] = "topr_corner"
-  corners[2,4] = "5"
+  corners[2,4] = "6"
 
   # Bottom right corner
   corners[3,1] = max(collated[collated$type == "botr", 1])
   corners[3,2] = min(collated[collated$type == "botr", 2])
   corners[3,3] = "botr_corner"
-  corners[3,4] = "5"
+  corners[3,4] = "6"
+  
+  # Bottom left corner
+  corners[4,1] = min(collated[collated$type == "botl", 1])
+  corners[4,2] = min(collated[collated$type == "botl", 2])
+  corners[4,3] = "botl_corner"
+  corners[4,4] = "6"
 
   collated = rbind(collated, corners)
 
@@ -133,7 +171,7 @@ extract_bpts = function(xdat, ydat) {
     collated[collated$type == "topl",]
   }
 
-  topl_poly$type = "topl_poly"
+  topl_poly$type = "topl"
   topl_poly$legend = "0"
 
   # poly_tl <- topl_poly
@@ -153,7 +191,7 @@ extract_bpts = function(xdat, ydat) {
     collated[collated$type == "topr",]
   }
 
-  topr_poly$type = "topr_poly"
+  topr_poly$type = "topr"
   topr_poly$legend = "0"
 
   # poly_tr <- topr_poly
@@ -173,8 +211,21 @@ extract_bpts = function(xdat, ydat) {
     collated[collated$type == "botr",]
   }
 
-  botr_poly$type = "botr_poly"
+  botr_poly$type = "botr"
   botr_poly$legend = "0"
+  
+  # Bottom left
+  botl_poly = if(length(collated[collated$type == "botl",][[1]]) > lim_lower) {
+    rbind(collated[collated$type == "botl_corner",],
+          collated[collated$type == "botl",],
+          collated[collated$type == "botl_corner",])
+    
+  } else {
+    collated[collated$type == "botl",]
+  }
+  
+  botl_poly$type = "botl"
+  botl_poly$legend = "0"
 
   # poly_br <- botr_poly
   # poly_br$legend <- 1:length(poly_br[,1])
@@ -182,12 +233,13 @@ extract_bpts = function(xdat, ydat) {
   # poly_br[,3:4] <- lapply(poly_br[,1:2], as.factor)
   # poly_br <<- poly_br
 
-  collated = rbind(collated, topl_poly, topr_poly, botr_poly)
+  collated = rbind(collated, topl_poly, topr_poly, botr_poly, botl_poly)
 
   # Convert column types and matrix into factored data frame
   collated$x = as.numeric(collated$x)
   collated$y = as.numeric(collated$y)
-  collated$type = as.factor(collated$type)
+  collated$type = factor(collated$type, levels = c("topl", "topr", "botl", "botr"), 
+                         labels = c("Top-left",  "Top-right", "Bottom-left", "Bottom-right"))
   collated$legend = as.factor(collated$legend)
   rownames(collated) = 1:length(collated$x)
   output = as.data.frame(collated)

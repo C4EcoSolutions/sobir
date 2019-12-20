@@ -23,52 +23,62 @@
 #' perm_plot(permExample, 100)
 perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
   
-  nsim = length(perm[perm$polygon == "botr",2])
+  perm = perm_sank
+  n = 100
+  n2 = n
+  method = "auto"
 
-  botr_pos = perm[perm$polygon == "botr",2] >= perm[perm$source == "obs",2][[1]]
+  nsim = length(perm[perm$polygon == "botr",2]) - 1
+
+  botl_pos = perm[perm$polygon == "botl",2] >= perm[perm$source == "obs",2][[1]]
+  # botl_perc = (sum(botl_pos) + 1) / (nsim + 1)
+  botl_perc = statmod::permp(x = sum(botl_pos), nperm = nsim, n = n, n2 = n2, method = method)
+  
+  botr_pos = perm[perm$polygon == "botr",2] >= perm[perm$source == "obs",2][[2]]
   # botr_perc = (sum(botr_pos) + 1) / (nsim + 1)
   botr_perc = statmod::permp(x = sum(botr_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
-  topl_pos = perm[perm$polygon == "topl",2] >= perm[perm$source == "obs",2][[2]]
+  topl_pos = perm[perm$polygon == "topl",2] >= perm[perm$source == "obs",2][[3]]
   # topl_perc = (sum(topl_pos) + 1) / (nsim + 1)
   topl_perc = statmod::permp(x = sum(topl_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
-  topr_pos = perm[perm$polygon == "topr",2] >= perm[perm$source == "obs",2][[3]]
+  topr_pos = perm[perm$polygon == "topr",2] >= perm[perm$source == "obs",2][[4]]
   # topr_perc = (sum(topr_pos) + 1) / (nsim + 1)
   topr_perc = statmod::permp(x = sum(topr_pos), nperm = nsim, n = n, n2 = n2, method = method)
 
   # Function to rename the facet headings
-  poly_names = list('topl' = paste0("Upper left: p = ", round(topl_perc, 4)),
-                    'topr' = paste0("Upper right: p = ", round(topr_perc, 4)),
-                    'botr' = paste0("Lower right: p = ", round(botr_perc, 4)))
+  poly_names = list('topl' = paste0("Top-left: p = ", round(topl_perc, 4)),
+                    'topr' = paste0("Top-right: p = ", round(topr_perc, 4)),
+                    'botl' = paste0("Bottom-left: p = ", round(botl_perc, 4)),
+                    'botr' = paste0("Bottom-right: p = ", round(botr_perc, 4)))
 
   poly_labeller <- function(variable,value){
     return(poly_names[value])
   }
 
   perm$polygon = factor(perm$polygon,
-                        labels = c("botr", "topl", "topr"),
-                        levels = c("topl", "topr", "botr"))
+                        levels = c("topl", "topr", "botl", "botr"),
+                        labels = c("Top-left", "Top-right", "Bottom-left", "Bottom-right"))
   OD = perm[perm$source == "obs",]
 
   if(histogram == F) {
-    suppressWarnings(ggplot(data = perm, aes(x = .data$rescale, .data$..scaled..)) +
+    suppressWarnings(ggplot(data = perm, aes(x = rescale, ..scaled..)) +
                        # geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_density(fill = "grey") +
-                       geom_vline(aes(xintercept = .data$rescale), data = OD, col = "black", linetype = 2) +
+                       geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +
                        labs(x = "Relative area", y = "Scaled density",
-                            title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim - 1)) +
+                            title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim)) +
                        theme_bw()
     )
   } else {
 
-    suppressWarnings(ggplot(data = perm, aes(x = .data$rescale)) +
+    suppressWarnings(ggplot(data = perm, aes(x = rescale)) +
                        geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
-                       geom_vline(aes(xintercept = .data$rescale), data = OD, col = "black", linetype = 2) +
+                       geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +
                        labs(x = "Relative area", y = "Frequency",
-                            title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim - 1)) +
+                            title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim)) +
                        theme_bw()
     )
   }

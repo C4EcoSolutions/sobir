@@ -20,8 +20,9 @@
 #' b = rnorm(100,0,1)
 #' perm_area(a,b,10)
 perm_area = function(xdat, ydat, nsim){
-  
+
   obs = cbind.data.frame(xdat, ydat)
+  
   fix_ymax = obs[obs$ydat == max(ydat), ]
   fix_ymax = fix_ymax[fix_ymax$xdat == max(fix_ymax$xdat), ]
   fix_ymax = unique(fix_ymax)
@@ -29,39 +30,53 @@ perm_area = function(xdat, ydat, nsim){
   fix_xmax = obs[obs$xdat == max(xdat), ]
   fix_xmax = fix_xmax[fix_xmax$ydat == max(fix_xmax$ydat), ]
   fix_xmax = unique(fix_xmax)
+  
+  fix_ymin = obs[obs$ydat == min(ydat), ]
+  fix_ymin = fix_ymin[fix_ymin$xdat == min(fix_ymin$xdat), ]
+  fix_ymin = unique(fix_ymin)
+  
+  fix_xmin = obs[obs$xdat == min(xdat), ]
+  fix_xmin = fix_xmin[fix_xmin$ydat == min(fix_xmin$ydat), ]
+  fix_xmin = unique(fix_xmin)
 
 
-  ID_free = ( match(obs$xdat, fix_xmax$xdat) & match(obs$ydat, fix_xmax$ydat) ) | ( match(obs$xdat, fix_ymax$xdat) & match(obs$ydat, fix_ymax$ydat) )
+  ID_free = ( match(obs$xdat, fix_xmax$xdat) & match(obs$ydat, fix_xmax$ydat) ) | 
+    ( match(obs$xdat, fix_ymax$xdat) & match(obs$ydat, fix_ymax$ydat) ) |
+    ( match(obs$xdat, fix_xmin$xdat) & match(obs$ydat, fix_xmin$ydat) ) |
+    ( match(obs$xdat, fix_ymin$xdat) & match(obs$ydat, fix_ymin$ydat) ) 
+    
   ID_free[is.na(ID_free)] = F
 
-  free_dat <- obs[!ID_free, ]
+  free_dat <- dplyr::filter(obs, !ID_free)
 
   x_dat = free_dat$xdat
   y_dat = free_dat$ydat
   fix_ymax = as.matrix(fix_ymax)
-  fix_xmax = as.matrix(fix_xmax)
+  fix_xmax = as.matrix(fix_xmax)  
+  fix_ymin = as.matrix(fix_ymin)
+  fix_xmin = as.matrix(fix_xmin)
 
   # Create empty matrix with a column for each polygon area and a row for each iteration
-  result = matrix(NA, nrow = nsim, ncol = 3)
+  result = matrix(NA, nrow = nsim, ncol = 4)
 
   for(j in 1:nsim){
     # Create simulation
     sim_x = sample(x_dat, size = length(x_dat), replace = F)
     sim_y = sample(y_dat, size = length(y_dat), replace = F)
-    sim_x = c(sim_x, fix_xmax[ , 1], fix_ymax[ , 1])
-    sim_y = c(sim_y, fix_xmax[ , 2], fix_ymax[ , 2])
+    sim_x = c(sim_x, fix_xmax[ , 1], fix_ymax[ , 1], fix_xmin[ , 1], fix_ymin[ , 1])
+    sim_y = c(sim_y, fix_xmax[ , 2], fix_ymax[ , 2], fix_xmin[ , 2], fix_ymin[ , 2])
 
     # Calculate simulated area
     sim_area =    suppressWarnings(calc_area(sim_x, sim_y))
 
-    for(i in 1:3){
+    for(i in 1:4){
       result[j , i] = sim_area[[i]]
     }
   }
 
   # Create tidy dataframe for the simulated areas
   result_df = as.data.frame(result)
-  colnames(result_df) = c("botr", "topl", "topr")
+  colnames(result_df) = c("botl", "botr", "topl", "topr")
   df_tidy = gather(result_df, "polygon", "val")
   df_tidy$source = "sim"
 

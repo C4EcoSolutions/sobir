@@ -12,6 +12,7 @@
 #'
 #' @return a list of the no-data zone areas
 #' @import tidyr
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -19,7 +20,7 @@
 #' b = rnorm(100,0,1)
 #' calc_area(a,b)
 calc_area = function(xdat, ydat){
-
+  
   # Extract boundary points
 
   extracted = extract_bpts(xdat, ydat)
@@ -57,7 +58,7 @@ calc_area = function(xdat, ydat){
   area_topl = topl_poly@area
   area_topr = topr_poly@area
   area_botr = botr_poly@area
-  output <<- list(botr = area_botr, topl = area_topl, topr = area_topr)
+  output <- list(botr = area_botr, topl = area_topl, topr = area_topr)
   
   return(output)
 }

@@ -26,6 +26,6 @@ perm_plot calculates the significance of the observed no-data zones and plots th
 \examples{
 a = rnorm(100,0,1)
 b = rnorm(100,0,1)
-permExample = perm_area(a,b,100)
+permExample = perm_area(a,b,10)
 perm_plot(permExample, 100)
 }

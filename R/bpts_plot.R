@@ -16,6 +16,7 @@
 #'
 #' @return a ggplot2 scatterplot
 #' @import ggplot2
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -23,20 +24,21 @@
 #' b = rnorm(100,0,1)
 #' bptsExample = extract_bpts(a,b)
 #' bpts_plot(bptsExample, "a", "b")
+
 bpts_plot = function(bpts, xlab = "", ylab = "", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE){
   
   if(colour == TRUE){
-    bpts_graph = ggplot(data = bpts, aes(x = x, y=y, fill = legend))+
-      geom_polygon(data = subset(bpts, type == "topl_poly"), fill = "blue", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, type == "topr_poly"), fill = "red", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, type == "botr_poly"), fill = "green", alpha = 0.3) +
-      geom_point(data = subset(bpts, legend == "4"), shape = 21, alpha = 0.5) +
-      geom_point(data = subset(bpts, legend == "3"), shape = 21) +
-      geom_line(data = subset(bpts, legend == "3"), col = "green") +
-      geom_point(data = subset(bpts, legend == "1"), shape = 21) +
-      geom_line(data = subset(bpts, legend == "1"), col = "blue") +
-      geom_point( data = subset(bpts, legend == "2"), shape = 21) +
-      geom_line(data = subset(bpts, legend == "2"), col = "red") +
+    bpts_graph = ggplot(data = bpts, aes(x = .data$x, y = .data$y, fill = .data$legend))+
+      geom_polygon(data = subset(bpts, .data$type == "topl_poly"), fill = "blue", alpha = 0.3) +
+      geom_polygon(data = subset(bpts, .data$type == "topr_poly"), fill = "red", alpha = 0.3) +
+      geom_polygon(data = subset(bpts, .data$type == "botr_poly"), fill = "green", alpha = 0.3) +
+      geom_point(data = subset(bpts, .data$legend == "4"), shape = 21, alpha = 0.5) +
+      geom_point(data = subset(bpts, .data$legend == "3"), shape = 21) +
+      geom_line(data = subset(bpts, .data$legend == "3"), col = "green") +
+      geom_point(data = subset(bpts, .data$legend == "1"), shape = 21) +
+      geom_line(data = subset(bpts, .data$legend == "1"), col = "blue") +
+      geom_point( data = subset(bpts, .data$legend == "2"), shape = 21) +
+      geom_line(data = subset(bpts, .data$legend == "2"), col = "red") +
       scale_fill_manual(values = c("blue","red","green","grey"), name = "Legend",
                         labels = c("Top left boundary",  "Top right boundary",
                                    "Bottom right boundary", "Non-boundary points")) +
@@ -45,20 +47,20 @@ bpts_plot = function(bpts, xlab = "", ylab = "", export_name = "bpts plot.png", 
       theme_classic()
   } else {
 
-    bpts_graph = ggplot(data = bpts, aes(x = x, y=y, fill = legend))+
-      geom_polygon(data = subset(bpts, type == "topl_poly"), fill = "grey", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, type == "topr_poly"), fill = "grey", alpha = 0.3) +
-      geom_polygon(data = subset(bpts, type == "botr_poly"), fill = "grey", alpha = 0.3) +
+    bpts_graph = ggplot(data = bpts, aes(x = .data$x, y = .data$y, fill = .data$legend))+
+      geom_polygon(data = subset(bpts, .data$type == "topl_poly"), fill = "grey", alpha = 0.3) +
+      geom_polygon(data = subset(bpts, .data$type == "topr_poly"), fill = "grey", alpha = 0.3) +
+      geom_polygon(data = subset(bpts, .data$type == "botr_poly"), fill = "grey", alpha = 0.3) +
 
-      geom_line(data = subset(bpts, legend == "3"), col = "darkgrey", linetype = "dotted") +
-      geom_line(data = subset(bpts, legend == "1"), col = "darkgrey") +
-      geom_line(data = subset(bpts, legend == "2"), col = "darkgrey", linetype = "longdash") +
+      geom_line(data = subset(bpts, .data$legend == "3"), col = "darkgrey", linetype = "dotted") +
+      geom_line(data = subset(bpts, .data$legend == "1"), col = "darkgrey") +
+      geom_line(data = subset(bpts, .data$legend == "2"), col = "darkgrey", linetype = "longdash") +
 
-      geom_point(data = subset(bpts, legend == "4"), col = "black") +
+      geom_point(data = subset(bpts, .data$legend == "4"), col = "black") +
 
-      geom_point(data = subset(bpts, legend == "3"), col = "black") +
-      geom_point(data = subset(bpts, legend == "1"), col = "black") +
-      geom_point( data = subset(bpts, legend == "2"),col = "black") +
+      geom_point(data = subset(bpts, .data$legend == "3"), col = "black") +
+      geom_point(data = subset(bpts, .data$legend == "1"), col = "black") +
+      geom_point( data = subset(bpts, .data$legend == "2"),col = "black") +
 
       scale_fill_manual(values = c("black","black","black","black"), name = "Legend",
                         labels = c("Top left boundary",  "Top right boundary",

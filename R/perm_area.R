@@ -12,14 +12,15 @@
 #'
 #' @return a perm table that can be plotted directly using perm_plot()
 #' @import tidyr
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
 #' a = rnorm(100,0,1)
 #' b = rnorm(100,0,1)
-#' perm_area(a,b,100)
+#' perm_area(a,b,10)
 perm_area = function(xdat, ydat, nsim){
-
+  
   obs = cbind.data.frame(xdat, ydat)
   fix_ymax = obs[obs$ydat == max(ydat), ]
   fix_ymax = fix_ymax[fix_ymax$xdat == max(fix_ymax$xdat), ]
@@ -61,14 +62,14 @@ perm_area = function(xdat, ydat, nsim){
   # Create tidy dataframe for the simulated areas
   result_df = as.data.frame(result)
   colnames(result_df) = c("botr", "topl", "topr")
-  df_tidy = gather(result_df, polygon, val)
+  df_tidy = gather(result_df, "polygon", "val")
   df_tidy$source = "sim"
 
   # Calculate observed area
   obs_area = suppressWarnings(calc_area(xdat, ydat))
 
   # Create tidy dataframe for the observed areas
-  obs_tidy = gather(as.data.frame(obs_area), polygon, val)
+  obs_tidy = gather(as.data.frame(obs_area), "polygon", "val")
   obs_tidy$source = "obs"
 
   # Collate the df

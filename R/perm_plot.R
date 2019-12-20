@@ -13,15 +13,16 @@
 #' @param method Default is "auto".
 #'
 #' @return a ggplot2 histogram and p-value for each no-data zone
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
 #' a = rnorm(100,0,1)
 #' b = rnorm(100,0,1)
-#' permExample = perm_area(a,b,100)
+#' permExample = perm_area(a,b,10)
 #' perm_plot(permExample, 100)
 perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
-
+  
   nsim = length(perm[perm$polygon == "botr",2])
 
   botr_pos = perm[perm$polygon == "botr",2] >= perm[perm$source == "obs",2][[1]]
@@ -51,10 +52,10 @@ perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
   OD = perm[perm$source == "obs",]
 
   if(histogram == F) {
-    suppressWarnings(ggplot(data = perm, aes(x = rescale, ..scaled..)) +
+    suppressWarnings(ggplot(data = perm, aes(x = .data$rescale, .data$..scaled..)) +
                        # geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_density(fill = "grey") +
-                       geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
+                       geom_vline(aes(xintercept = .data$rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +
                        labs(x = "Relative area", y = "Scaled density",
                             title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim - 1)) +
@@ -62,9 +63,9 @@ perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
     )
   } else {
 
-    suppressWarnings(ggplot(data = perm, aes(x = rescale)) +
+    suppressWarnings(ggplot(data = perm, aes(x = .data$rescale)) +
                        geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
-                       geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
+                       geom_vline(aes(xintercept = .data$rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +
                        labs(x = "Relative area", y = "Frequency",
                             title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim - 1)) +

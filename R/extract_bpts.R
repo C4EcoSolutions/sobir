@@ -10,6 +10,8 @@
 #' @param ydat a vector of the dependent data
 #'
 #' @return a data frame of the two vectors with the boundary points and other relevant data labelled.
+#' @importFrom rlang .data
+#' @importFrom stats na.omit
 #' @export
 #'
 #' @examples
@@ -17,7 +19,7 @@
 #' b = rnorm(100,0,1)
 #' extract_bpts(a,b)
 extract_bpts = function(xdat, ydat) {
-
+  
   x = xdat
   y = ydat
 

@@ -22,5 +22,5 @@ perm_area calculates the no-data zone areas for each permutation of the data sim
 \examples{
 a = rnorm(100,0,1)
 b = rnorm(100,0,1)
-perm_area(a,b,100)
+perm_area(a,b,10)
 }

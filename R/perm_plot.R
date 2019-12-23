@@ -22,11 +22,6 @@
 #' permExample = perm_area(a,b,10)
 #' perm_plot(permExample, 100)
 perm_plot = function(perm, n, n2 = n, histogram = TRUE, method = "auto") {
-  
-  perm = perm_sank
-  n = 100
-  n2 = n
-  method = "auto"
 
   nsim = length(perm[perm$polygon == "botr",2]) - 1
 

@@ -28,32 +28,32 @@ calc_area = function(xdat, ydat){
   # Rescale polygon vertices to proportion of x and y range
   topl_x = as.numeric(dplyr::filter(extracted, type == "Top-left", legend == 0)$x)
   topl_y = as.numeric(dplyr::filter(extracted, type == "Top-left", legend == 0)$y)
-  topl_coords = dplyr::mutate(data.frame(x = scales::rescale(topl_x), 
-                                         y = scales::rescale(topl_y)),
+  topl_coords = dplyr::mutate(data.frame(x = scales::rescale(topl_x, from = range(extracted$x)), 
+                                         y = scales::rescale(topl_y, from = range(extracted$y))),
                        label = ifelse(x == min(x) | y == max(y), 
                                       ifelse(x == min(x) & y == max(y), "corner", "bound_corner"),
                                       "bound"))
 
   topr_x = as.numeric(dplyr::filter(extracted, type == "Top-right", legend == 0)$x)
   topr_y = as.numeric(dplyr::filter(extracted, type == "Top-right", legend == 0)$y)
-  topr_coords = dplyr::mutate(data.frame(x = scales::rescale(topr_x), 
-                                         y = scales::rescale(topr_y)),
+  topr_coords = dplyr::mutate(data.frame(x = scales::rescale(topr_x, from = range(extracted$x)), 
+                                         y = scales::rescale(topr_y, from = range(extracted$y))),
                               label = ifelse(x == max(x) | y == max(y),
                                              ifelse(x == max(x) & y == max(y), "corner", "bound_corner"),
                                              "bound"))
 
   botr_x = as.numeric(dplyr::filter(extracted, type == "Bottom-right", legend == 0)$x)
   botr_y = as.numeric(dplyr::filter(extracted, type == "Bottom-right", legend == 0)$y)
-  botr_coords = dplyr::mutate(data.frame(x = scales::rescale(botr_x), 
-                                         y = scales::rescale(botr_y)),
+  botr_coords = dplyr::mutate(data.frame(x = scales::rescale(botr_x, from = range(extracted$x)), 
+                                         y = scales::rescale(botr_y, from = range(extracted$y))),
                               label = ifelse(x == max(x) | y == min(y), 
                                              ifelse(x == max(x) & y == min(y), "corner", "bound_corner"),
                                              "bound"))
   
   botl_x = as.numeric(dplyr::filter(extracted, type == "Bottom-left", legend == 0)$x)
   botl_y = as.numeric(dplyr::filter(extracted, type == "Bottom-left", legend == 0)$y)
-  botl_coords = dplyr::mutate(data.frame(x = scales::rescale(botl_x), 
-                                         y = scales::rescale(botl_y)),
+  botl_coords = dplyr::mutate(data.frame(x = scales::rescale(botl_x, from = range(extracted$x)), 
+                                         y = scales::rescale(botl_y, from = range(extracted$y))),
                               label = ifelse(x == min(x) | y == min(y), 
                                              ifelse(x == min(x) & y == min(y), "corner", "bound_corner"),
                                              "bound"))
@@ -76,25 +76,6 @@ calc_area = function(xdat, ydat){
   # botl_crnr = dplyr::filter(botl_coords, str_detect(label, "corner"))
   area_botl = AUC(botl_bound$x, botl_bound$y, absolutearea = TRUE)
 
-  # # Create a Polygons
-  # p = sp::Polygon(topl_coords)
-  # topl_poly = sp::Polygons(list(p), 1)
-  # 
-  # p = sp::Polygon(topr_coords)
-  # topr_poly = sp::Polygons(list(p), 1)
-  # 
-  # p = sp::Polygon(botr_coords)
-  # botr_poly = sp::Polygons(list(p), 1)
-  # 
-  # p = sp::Polygon(botl_coords)
-  # botl_poly = sp::Polygons(list(p), 1)
-  # 
-  # # Extract areas
-  # area_topl = topl_poly@area
-  # area_topr = topr_poly@area
-  # area_botr = botr_poly@area
-  # area_botl = botl_poly@area
-  
   output <- list(botl = area_botl, botr = area_botr, topl = area_topl, topr = area_topr)
   
   return(output)

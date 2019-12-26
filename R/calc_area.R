@@ -74,7 +74,7 @@ calc_area = function(xdat, ydat){
   
   botl_bound = dplyr::filter(botl_coords, stringr::str_detect(label, "bound"))
   # botl_crnr = dplyr::filter(botl_coords, stringr::str_detect(label, "corner"))
-  area_botl = DescTools::DescTools::AUC(botl_bound$x, botl_bound$y, absolutearea = TRUE)
+  area_botl = DescTools::AUC(botl_bound$x, botl_bound$y, absolutearea = TRUE)
   
   output <- list(botl = area_botl, botr = area_botr, topl = area_topl, topr = area_topr)
   

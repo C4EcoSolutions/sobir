@@ -13,6 +13,7 @@
 #' @return a perm table that can be plotted directly using perm_plot()
 #' @import tidyr
 #' @importFrom rlang .data
+#' @importFrom scales rescale
 #' @export
 #'
 #' @examples

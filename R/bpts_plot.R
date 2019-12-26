@@ -16,8 +16,8 @@
 #'
 #' @return a ggplot2 scatterplot
 #' @import ggplot2
+#' @import dplyr
 #' @importFrom rlang .data
-#' @importFrom dplyr filter
 #' @export
 #'
 #' @examples

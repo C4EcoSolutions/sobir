@@ -26,7 +26,7 @@
 #' bptsExample = extract_bpts(a,b)
 #' bpts_plot(bptsExample, "a", "b")
 
-bpts_plot = function(bpts, xlab = "x", ylab = "y", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE, legend.position = "none"){
+bpts_plot = function(bpts, xlab = "x", ylab = "y", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE, legend.position = "right"){
 
   
  bpts_baseplot = ggplot(data = filter(bpts, !legend %in% c(0, 6)), aes(x, y)) +

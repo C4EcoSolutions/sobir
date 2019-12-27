@@ -85,10 +85,12 @@ dat_within %>%
   annotate(geom = "text", x = -1.5, y = 1.5, label = "no-data\nzone") +
   lims(x = c(-3,3),
        y = c(-3,3)) +
-  theme_bw()
+  theme_bw() 
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Visualise%20simulated%20data-1.png)<!-- -->
+
+![](README_Figure%201.png)
 
 To see what the package is assessing in the analysis, the boundaries and
 no-data zones can be extracted and visualised using the below functions.
@@ -102,6 +104,8 @@ bpts_plot(bpts_within, xlab = "x", ylab = "y")
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Extract%20and%20visualise%20boundary%20points-1.png)<!-- -->
+
+![](README_Figure%202.png)
 
 The analysis involves permuting the data \(nsim\) times to simulate a
 random distribution of the sample space. This is the only variable that
@@ -122,6 +126,8 @@ perm_plot(perm_within, histogram = T)
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis-1.png)<!-- -->
+
+![](README_Figure%203.png)
 
 As expected, the only no-data zone that shows a significant constraint
 is the top-left where the artificial constraint was imposed.

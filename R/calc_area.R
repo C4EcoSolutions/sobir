@@ -15,6 +15,7 @@
 #' @import stringr
 #' @import dplyr
 #' @import DescTools
+#' @import scales
 #' @importFrom rlang .data
 #' @export
 #'

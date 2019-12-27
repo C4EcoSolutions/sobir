@@ -9,6 +9,7 @@
 #' @param xdat a vector of the independent data
 #' @param ydat a vector of the dependent data
 #' @param nsim the number of simulations to run
+#' @param method character string indicating computation method (default is "auto"). Possible values are "exact", "approximate" or "auto". 
 #'
 #' @return a perm table that can be plotted directly using perm_plot()
 #' @import tidyr
@@ -20,7 +21,7 @@
 #' a = rnorm(100,0,1)
 #' b = rnorm(100,0,1)
 #' perm_area(a,b,10)
-perm_area = function(xdat, ydat, nsim){
+perm_area = function(xdat, ydat, nsim, method = "auto"){
 
   obs = cbind.data.frame(xdat, ydat)
   
@@ -89,7 +90,30 @@ perm_area = function(xdat, ydat, nsim){
   obs_tidy$source = "obs"
 
   # Collate the df
-  collated_tidy = rbind.data.frame(df_tidy, obs_tidy)
-  collated_tidy$rescale = scales::rescale(collated_tidy$val)
-  return(collated_tidy)
+  dat_perm = rbind.data.frame(df_tidy, obs_tidy)
+  dat_perm$rescale = scales::rescale(dat_perm$val)
+  
+  # Test the significance of each no-data zone
+  botl_pos = dat_perm[dat_perm$polygon == "botl",2] >= dat_perm[dat_perm$source == "obs",2][[1]]
+  p_botl = statmod::permp(x = sum(botl_pos), nperm = nsim, n = length(xdat), n2 = length(ydat), method = method)
+  
+  botr_pos = dat_perm[dat_perm$polygon == "botr",2] >= dat_perm[dat_perm$source == "obs",2][[2]]
+  p_botr = statmod::permp(x = sum(botr_pos), nperm = nsim, n = length(xdat), n2 = length(ydat), method = method)
+  
+  topl_pos = dat_perm[dat_perm$polygon == "topl",2] >= dat_perm[dat_perm$source == "obs",2][[3]]
+  p_topl = statmod::permp(x = sum(topl_pos), nperm = nsim, n = length(xdat), n2 = length(ydat), method = method)
+  
+  topr_pos = dat_perm[dat_perm$polygon == "topr",2] >= dat_perm[dat_perm$source == "obs",2][[4]]
+  p_topr = statmod::permp(x = sum(topr_pos), nperm = nsim, n = length(xdat), n2 = length(ydat), method = method)
+  
+  # Final result to return
+  list_result = list(n = length(xdat),
+                     nsim = nsim,
+                     p_topr = p_topr,
+                     p_topl = p_topl,
+                     p_botr = p_botr,
+                     p_botl = p_botl,
+                     data = dat_perm)
+  
+  return(list_result)
 }

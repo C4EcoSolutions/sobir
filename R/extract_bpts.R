@@ -87,9 +87,10 @@ extract_bpts = function(xdat, ydat) {
   botl[[1]] <- binned_points[[1]][1,]
   for(i in 2:100){
     
-    ifelse(binned_points[[i-1]][1,2] == binned_points[[i-1]][2,2],
-           binned_points[[i]] <- binned_points[[i-1]][-1,],
-           binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,2] < binned_points[[i-1]][1,2]),])
+    # ifelse(binned_points[[i-1]][1,2] == binned_points[[i-1]][2,2],
+    #        binned_points[[i]] <- binned_points[[i-1]][-1,],
+    #        binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,2] < binned_points[[i-1]][1,2]),])
+    binned_points[[i]] <- binned_points[[i-1]][which(binned_points[[i-1]][,2] < binned_points[[i-1]][1,2]),]
     
     ##binned_points##
     botl[[i]] <- binned_points[[i]][1,]

@@ -28,7 +28,7 @@ perm_plot = function(perm, histogram = TRUE) {
   
   if(names(perm[3]) == "p") {
     
-    bound = unique(perm_wood_noZero$data$polygon)
+    bound = unique(perm$data$polygon)
     
     name_option = data.frame(name = c("Top-left", "Top-right", "Bottom-left", "Bottom-right"),
                              bounds = c("topl", "topr", "botl", "botr"))

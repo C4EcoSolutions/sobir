@@ -11,6 +11,7 @@
 #'
 #' @return a ggplot2 histogram and p-value for each no-data zone
 #' @import statmod
+#' @import dplyr
 #' @importFrom rlang .data
 #' @export
 #'
@@ -20,28 +21,47 @@
 #' permExample = perm_area(a,b,10)
 #' perm_plot(permExample, 100)
 perm_plot = function(perm, histogram = TRUE) {
-  
+
   dat_perm = perm$data
   nsim = perm$nsim
   n = perm$n
   
-  # Function to rename the facet headings
-  poly_names = list('topl' = paste0("Top-left: p = ", round(perm$p_topl, 4)),
-                    'topr' = paste0("Top-right: p = ", round(perm$p_topr, 4)),
-                    'botl' = paste0("Bottom-left: p = ", round(perm$p_botl, 4)),
-                    'botr' = paste0("Bottom-right: p = ", round(perm$p_botr, 4)))
-
+  if(names(perm[3]) == "p") {
+    
+    bound = unique(perm_wood_noZero$data$polygon)
+    
+    name_option = data.frame(name = c("Top-left", "Top-right", "Bottom-left", "Bottom-right"),
+                             bounds = c("topl", "topr", "botl", "botr"))
+    name_option = dplyr::filter(name_option, bounds == bound)
+    
+    poly_names = list('bound' = paste0(name_option$name, ": p = ", round(perm$p, 4)))
+    
+    dat_perm$polygon = factor(dat_perm$polygon,
+                              levels = bound,
+                              labels = name_option$name)
+    OD = dat_perm[dat_perm$source == "obs",]
+    
+  } else {
+    
+    # Function to rename the facet headings
+    poly_names = list('topl' = paste0("Top-left: p = ", round(perm$p_topl, 4)),
+                      'topr' = paste0("Top-right: p = ", round(perm$p_topr, 4)),
+                      'botl' = paste0("Bottom-left: p = ", round(perm$p_botl, 4)),
+                      'botr' = paste0("Bottom-right: p = ", round(perm$p_botr, 4)))
+    
+    dat_perm$polygon = factor(dat_perm$polygon,
+                              levels = c("topl", "topr", "botl", "botr"),
+                              labels = c("Top-left", "Top-right", "Bottom-left", "Bottom-right"))
+    OD = dat_perm[dat_perm$source == "obs",]
+    
+  }
+  
   poly_labeller <- function(variable,value){
     return(poly_names[value])
   }
 
-  dat_perm$polygon = factor(dat_perm$polygon,
-                        levels = c("topl", "topr", "botl", "botr"),
-                        labels = c("Top-left", "Top-right", "Bottom-left", "Bottom-right"))
-  OD = dat_perm[dat_perm$source == "obs",]
-
   if(histogram == F) {
-    suppressWarnings(ggplot(data = dat_perm, aes(x = rescale, ..scaled..)) +
+    suppressWarnings(ggplot(data = dat_perm[dat_perm$source == "sim",], aes(x = rescale, ..scaled..)) +
                        # geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_density(fill = "grey") +
                        geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
@@ -52,7 +72,7 @@ perm_plot = function(perm, histogram = TRUE) {
     )
   } else {
 
-    suppressWarnings(ggplot(data = dat_perm, aes(x = rescale)) +
+    suppressWarnings(ggplot(data = dat_perm[dat_perm$source == "sim",], aes(x = rescale)) +
                        geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +

@@ -131,7 +131,7 @@ bpts_within = extract_bpts(dat_within$x, dat_within$y)
 bpts_plot(bpts_within, xlab = "x", ylab = "y") 
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Extract%20and%20visualise%20artificial%20boundary%20points-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Extract%20and%20visualise%20artificial%20boundary%20points-1.png)<!-- -->
 
 The analysis involves permuting the data \(nsim\) times to simulate a
 random distribution of the sample space. This is the only variable that
@@ -151,7 +151,7 @@ perm_within = perm_area(dat_within$x, dat_within$y, nsim = 100, boundary = "topl
 perm_plot(perm_within, histogram = T)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis%20on%20artificial%20data-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20analysis%20on%20artificial%20data-1.png)<!-- -->
 
 As expected, the only no-data zone that shows a significant constraint
 is the top-left where the artificial constraint was imposed.
@@ -171,7 +171,7 @@ perm_random = perm_area(dat_sim$x, dat_sim$y, nsim = 100, boundary = "topl")
 perm_plot(perm_random, histogram = T)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis%20on%20random%20data-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20analysis%20on%20random%20data-1.png)<!-- -->
 
 As expected, the no-data zone of the random data shows no significant
 constraint on the top-left boundary.
@@ -210,7 +210,7 @@ bpts_sankaran = extract_bpts(dat_sankaran$MAP, dat_sankaran$Cover)
 bpts_plot(bpts_sankaran, xlab = "MAP (mm)", ylab = "Woody Cover (%)") 
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Extract%20and%20visualise%20Sankaran%20boundary%20points-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Extract%20and%20visualise%20Sankaran%20boundary%20points-1.png)<!-- -->
 
 The top-left boundary is hypothesised to be experiencing a significant
 constraint, which reflects a constraint of the maximum woody cover at
@@ -225,7 +225,7 @@ perm_sankaran = perm_area(dat_sankaran$MAP, dat_sankaran$Cover, nsim = 100, boun
 perm_plot(perm_sankaran, histogram = T)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Sankaran%20analysis-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20Sankaran%20analysis-1.png)<!-- -->
 
 The null hypothesis that the top-left boundary is random can be rejected
 as the p-value is less than
@@ -262,7 +262,7 @@ bpts_mills_mncu = extract_bpts(dat_mills$MnCu, dat_mills$TreeNum)
 bpts_plot(bpts_mills_mncu, xlab = "Soil Mn/Cu", ylab = "Tree abundance") 
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Extract%20and%20visualise%20Mills%20boundary%20points-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Extract%20and%20visualise%20Mills%20boundary%20points-1.png)<!-- -->
 
 In accordance with the Catabolic Theory, it was inferred that there were
 boundary effects occuring at both the top-left and bottom-right
@@ -280,13 +280,13 @@ perm_mills_botr = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, bound
 perm_plot(perm_mills_topl, histogram = T)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Mills%20analysis-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20Mills%20analysis-1.png)<!-- -->
 
 ``` r
 perm_plot(perm_mills_botr, histogram = T)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Mills%20analysis-2.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20Mills%20analysis-2.png)<!-- -->
 
 The null hypotheses that the top-left and bottom-right boundaries are
 random can both be rejected as the p-values are both less than 0.05.

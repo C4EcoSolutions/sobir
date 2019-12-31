@@ -48,17 +48,6 @@ library("devtools")
 install_github("C4EcoSolutions/sobir")
 ```
 
-    FALSE 
-    FALSE          checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpaG2SSB\remotes22587dbc4218\C4EcoSolutions-sobir-6950b9e/DESCRIPTION' ...  <U+2713>  checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpaG2SSB\remotes22587dbc4218\C4EcoSolutions-sobir-6950b9e/DESCRIPTION'
-    FALSE       -  preparing 'sobir':
-    FALSE    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   <U+2713>  checking DESCRIPTION meta-information
-    FALSE       -  checking for LF line-endings in source and make files and shell scripts
-    FALSE       -  checking for empty or unneeded directories
-    FALSE       -  looking to see if a 'data/datalist' file should be added
-    FALSE -  building 'sobir_0.1.1.9000.tar.gz'
-    FALSE      
-    FALSE 
-
 ## Usage
 
 ``` r
@@ -76,8 +65,8 @@ The data simulated below are simply two random normal variables with
 mean = 0, standard deviation = 1 and n = 200.
 
 An artificial boundary effect is imposed by removing all the points
-beyond the line \(y = 2x + 2\). This simulates a scenario in which the
-maximum value of y is constrained when \(x < 0\).
+beyond the line `y = 2x + 2`. This simulates a scenario in which the
+maximum value of y is constrained when `x < 0`.
 
 ``` r
 set.seed(1)
@@ -118,8 +107,6 @@ dat_within %>%
 
 ![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Visualise%20simulated%20data-1.png)<!-- -->
 
-
-
 To see what the package is assessing in the analysis, the boundaries and
 no-data zones can be extracted and visualised using the below functions.
 
@@ -133,11 +120,11 @@ bpts_plot(bpts_within, xlab = "x", ylab = "y")
 
 ![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Extract%20and%20visualise%20artificial%20boundary%20points-1.png)<!-- -->
 
-The analysis involves permuting the data \(nsim\) times to simulate a
+The analysis involves permuting the data `nsim` times to simulate a
 random distribution of the sample space. This is the only variable that
-needs to be explicitly defined. The greater \(nsim\), the greater the
+needs to be explicitly defined. The greater `nsim`, the greater the
 precision of the analysis but the longer the analysis will take. In this
-instance, \(nsim = 100\)
+instance, `nsim = 100`
 
 The results can be visualised as histograms of the simulated no-data
 zone distributions relative to the observed no-data zone areas.
@@ -156,11 +143,31 @@ perm_plot(perm_within, histogram = T)
 As expected, the only no-data zone that shows a significant constraint
 is the top-left where the artificial constraint was imposed.
 
+It is also possible to test all four no-data zones simultaneously by
+defining `boundary = all`. This is not ordinarily recommended as it may
+lead to “data dredging” or “p-hacking” (see
+[link](https://en.wikipedia.org/wiki/Data_dredging) for details).
+Ideally, hypotheses should be generated a priori based on previous
+studies or domain theory and tested accordingly. This is not unique to
+this analysis approach, but is true for statistical inferences in
+general.
+
+``` r
+# Run the permuation test
+set.seed(1)
+perm_within_all = perm_area(dat_within$x, dat_within$y, nsim = 100, boundary = "all")
+
+# Plot the results
+perm_plot(perm_within_all, histogram = T)
+```
+
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/master/vignettes/images/Run%20the%20analysis%20on%20all%20boundaries%20of%20artificial%20data-1.png)<!-- -->
+
 #### Random unconstrained data
 
 For comparison, we can assess the significance of the same boundary on
 the random data without the artifical constraint to test whether or not
-the tool will provide a Type 1 error.
+the significan result is due to Type 1 error sensitivity.
 
 ``` r
 # Run the permuation test

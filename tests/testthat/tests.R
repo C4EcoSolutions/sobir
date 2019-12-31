@@ -6,7 +6,7 @@ test_that("extract_bpts should be able to generate a bpts table from two vectors
   a = rnorm(10,0,1)
   b = rnorm(10,0,1)
   bpts <- extract_bpts(a,b)
-  expect_equal(bpts[c(1,16,25),4], factor(c(1,4,0), levels = 0:5))
+  expect_equal(bpts[c(1,16,25),4], factor(c(1,5,6), levels = 0:5))
 })
 
 context("bpts_plot")
@@ -27,8 +27,8 @@ test_that("calc_area should return a list of the three no-data zone areas unsing
   a = rnorm(20,0,1)
   b = rnorm(20,0,1)
   barea = calc_area(a,b)
-  expect_lt(barea$botr, 8000)
-  expect_gt(barea$botr, 7000)
+  expect_lt(barea$botr, 0.3)
+  expect_gt(barea$botr, 0.2)
 })
 
 context("perm_area")
@@ -37,19 +37,19 @@ test_that("perm_area should calculate the no-data zone areas for each permutatio
   set.seed(0)
   a = rnorm(10,0,1)
   b = rnorm(10,0,1)
-  bperm = perm_area(a,b,5)
-  expect_lt(bperm[7,4], 0.4)
-  expect_gt(bperm[7,4], 0.3)
+  bperm = perm_area(a,b,5, boundary = "topl")
+  expect_lt(bperm$data[6,4], 0.6)
+  expect_gt(bperm$data[6,4], 0.5)
 })
 
 context("perm_plot")
 
-test_that("perm_plot should calculate the significance of the observed no-data zones and plot them relative to the simulations",{
+test_that("perm_plot should pull the appropriate data from the perm_area analysis",{
   set.seed(0)
   a = rnorm(10,0,1)
   b = rnorm(10,0,1)
-  bperm = perm_area(a,b,5)
+  bperm = perm_area(a,b,5, boundary = "topl")
   bpplot = perm_plot(bperm,20)
-  expect_lt(bpplot$plot_env$botr_perc, 1.1)
-  expect_gt(bpplot$plot_env$botr_perc, 0.9)
+  expect_lt(bpplot$data[5,4], 0.7)
+  expect_gt(bpplot$data[5,4], 0.6)
 })

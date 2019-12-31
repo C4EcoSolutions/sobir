@@ -39,7 +39,7 @@ ongoing development. Any feedback would be appreciated.
 ## Installation
 
 `sobir` is available on [CRAN](https://cran.r-project.org/) (version
-0.1.0). It’s **not** recommended that this version be used, however as
+0.1.0). It’s **not** recommended that this version be used, however, as
 there are some important improvements and bug fixes in version
 0.1.1.9000, which can be installed using `devtools`.
 

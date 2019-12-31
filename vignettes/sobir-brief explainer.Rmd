@@ -24,7 +24,7 @@ The package has been made publically available, but is still under ongoing devel
 
 ## Installation
 
-`sobir` is available on [CRAN](https://cran.r-project.org/) (version 0.1.0). It's **not** recommended that this version be used, however as there are some important improvements and bug fixes in version 0.1.1.9000, which can be installed using `devtools`. 
+`sobir` is available on [CRAN](https://cran.r-project.org/) (version 0.1.0). It's **not** recommended that this version be used, however, as there are some important improvements and bug fixes in version 0.1.1.9000, which can be installed using `devtools`. 
 
 ```{r install github version, comment=F}
 
@@ -110,7 +110,7 @@ set.seed(1)
 perm_within = perm_area(dat_within$x, dat_within$y, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_within, histogram = F)
+perm_plot(perm_within, histogram = T)
 
 ```
 
@@ -127,7 +127,7 @@ set.seed(1)
 perm_random = perm_area(dat_sim$x, dat_sim$y, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_random, histogram = F)
+perm_plot(perm_random, histogram = T)
 
 ```
 
@@ -170,7 +170,7 @@ set.seed(1)
 perm_sankaran = perm_area(dat_sankaran$MAP, dat_sankaran$Cover, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_sankaran, histogram = F)
+perm_plot(perm_sankaran, histogram = T)
 
 ```
 
@@ -222,4 +222,4 @@ The null hypotheses that the top-left and bottom-right boundaries are random can
 
 ## Vignettes
 
-[sobir: get started](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes)
+[sobir: brief explainer](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes)

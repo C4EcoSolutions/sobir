@@ -1,8 +1,8 @@
 ---
 title: "sobir: Significance of Boundary Lines in R"
-date: "30/12/2019"
+date: "31/12/2019"
 output: 
-  github_document:
+  html_document:
     toc: TRUE
     toc_depth: 4
 ---
@@ -163,7 +163,7 @@ bpts_plot(bpts_sankaran, xlab = "MAP (mm)", ylab = "Woody Cover (%)")
 
 The top-left boundary is hypothesised to be experiencing a significant constraint, which reflects a constraint of the maximum woody cover at low mean annual precipitation. 
 
-```{r Run the analysis}
+```{r Run the Sankaran analysis}
 
 # Run the permuation test
 set.seed(1)
@@ -174,10 +174,51 @@ perm_plot(perm_sankaran, histogram = F)
 
 ```
 
+The null hypothesis that the top-left boundary is random can be rejected as the p-value is less than 0.05. 
 
 #### Mills et al. 2017 Effects of anabolic and catabolic nutrients on woody plant encroachment after long-term experimental fertilization in a South African savanna
 
-To be included
+The second empirical dataset is sourced from a PLoS ONE article on the effects of different soil nutrients on woody plant encroachment after long-term experimental fertilization. 
+
+```{r Import Mills data}
+
+dat_mills = read.csv(system.file("data", "WoodyTowoomba.csv", package = "sobir"))
+
+```
+
+One of the key figures in the article shows the number of trees against the ratio of soil Mn/Cu.
+
+The data were statistically analysed by aggregating the tree abundance into four bins (0-1, 2-4, 5-8, >8) and running a Kruskal-Wallis rank sum test on soil Mn/Cu across the bins. The soil Mn/Cu ratios were shown to be significantly greater where tree abundance was greater (more individual trees per plot). 
+
+```{r Extract and visualise Mills boundary points}
+
+dat_mills = dat_mills %>%
+   mutate(MnCu = Mn/Cu)
+
+# Extract boundary points (bpts object)
+bpts_mills_mncu = extract_bpts(dat_mills$MnCu, dat_mills$TreeNum)
+
+# Plot the boundaries
+bpts_plot(bpts_mills_mncu, xlab = "Soil Mn/Cu", ylab = "Tree abundance") 
+
+```
+
+In accordance with the Catabolic Theory, it was inferred that there were boundary effects occuring at both the top-left and bottom-right boundaries that represent a constraint on the maximum tree abundance at lower Mn/Cu ratios and a constraint on the minimum tree abundance at greater Mn/Cu ratios. 
+
+```{r Run the Mills analysis}
+
+# Run the permuation tests
+set.seed(1)
+perm_mills_topl = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "topl")
+perm_mills_botr = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "botr")
+
+# Plot the results
+perm_plot(perm_mills_topl, histogram = T)
+perm_plot(perm_mills_botr, histogram = T)
+
+```
+
+The null hypotheses that the top-left and bottom-right boundaries are random can both be rejected as the p-values are both less than 0.05. 
 
 ## Vignettes
 

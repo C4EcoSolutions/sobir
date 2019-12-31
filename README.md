@@ -1,6 +1,6 @@
 sobir: Significance of Boundary Lines in R
 ================
-30/12/2019
+31/12/2019
 
   - [Installation](#installation)
   - [Usage](#usage)
@@ -47,6 +47,17 @@ there are some important improvements and bug fixes in version
 library("devtools")
 install_github("C4EcoSolutions/sobir")
 ```
+
+    FALSE 
+    FALSE          checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpwLE0S6\remotes2e64739b57a6\C4EcoSolutions-sobir-1b60a6e/DESCRIPTION' ...  <U+2713>  checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpwLE0S6\remotes2e64739b57a6\C4EcoSolutions-sobir-1b60a6e/DESCRIPTION'
+    FALSE       -  preparing 'sobir':
+    FALSE    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   <U+2713>  checking DESCRIPTION meta-information
+    FALSE       -  checking for LF line-endings in source and make files and shell scripts
+    FALSE       -  checking for empty or unneeded directories
+    FALSE   -  looking to see if a 'data/datalist' file should be added
+    FALSE   -  building 'sobir_0.1.1.9000.tar.gz'
+    FALSE      
+    FALSE 
 
 ## Usage
 
@@ -212,11 +223,71 @@ perm_sankaran = perm_area(dat_sankaran$MAP, dat_sankaran$Cover, nsim = 100, boun
 perm_plot(perm_sankaran, histogram = F)
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis-1.png)<!-- -->
+![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Sankaran%20analysis-1.png)<!-- -->
+
+The null hypothesis that the top-left boundary is random can be rejected
+as the p-value is less than
+0.05.
 
 #### Mills et al. 2017 Effects of anabolic and catabolic nutrients on woody plant encroachment after long-term experimental fertilization in a South African savanna
 
-To be included
+The second empirical dataset is sourced from a PLoS ONE article on the
+effects of different soil nutrients on woody plant encroachment after
+long-term experimental
+fertilization.
+
+``` r
+dat_mills = read.csv(system.file("data", "WoodyTowoomba.csv", package = "sobir"))
+```
+
+One of the key figures in the article shows the number of trees against
+the ratio of soil Mn/Cu.
+
+The data were statistically analysed by aggregating the tree abundance
+into four bins (0-1, 2-4, 5-8, \>8) and running a Kruskal-Wallis rank
+sum test on soil Mn/Cu across the bins. The soil Mn/Cu ratios were shown
+to be significantly greater where tree abundance was greater (more
+individual trees per plot).
+
+``` r
+dat_mills = dat_mills %>%
+   mutate(MnCu = Mn/Cu)
+
+# Extract boundary points (bpts object)
+bpts_mills_mncu = extract_bpts(dat_mills$MnCu, dat_mills$TreeNum)
+
+# Plot the boundaries
+bpts_plot(bpts_mills_mncu, xlab = "Soil Mn/Cu", ylab = "Tree abundance") 
+```
+
+![](sobir-brief-explainer_files/figure-gfm/Extract%20and%20visualise%20Mills%20boundary%20points-1.png)<!-- -->
+
+In accordance with the Catabolic Theory, it was inferred that there were
+boundary effects occuring at both the top-left and bottom-right
+boundaries that represent a constraint on the maximum tree abundance at
+lower Mn/Cu ratios and a constraint on the minimum tree abundance at
+greater Mn/Cu ratios.
+
+``` r
+# Run the permuation tests
+set.seed(1)
+perm_mills_topl = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "topl")
+perm_mills_botr = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "botr")
+
+# Plot the results
+perm_plot(perm_mills_topl, histogram = T)
+```
+
+![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Mills%20analysis-1.png)<!-- -->
+
+``` r
+perm_plot(perm_mills_botr, histogram = T)
+```
+
+![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Mills%20analysis-2.png)<!-- -->
+
+The null hypotheses that the top-left and bottom-right boundaries are
+random can both be rejected as the p-values are both less than 0.05.
 
 ## Vignettes
 

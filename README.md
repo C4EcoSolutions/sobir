@@ -49,13 +49,13 @@ install_github("C4EcoSolutions/sobir")
 ```
 
     FALSE 
-    FALSE          checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpwLE0S6\remotes2e64739b57a6\C4EcoSolutions-sobir-1b60a6e/DESCRIPTION' ...  <U+2713>  checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpwLE0S6\remotes2e64739b57a6\C4EcoSolutions-sobir-1b60a6e/DESCRIPTION'
+    FALSE          checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpaG2SSB\remotes22587dbc4218\C4EcoSolutions-sobir-6950b9e/DESCRIPTION' ...  <U+2713>  checking for file 'C:\Users\User-PC\AppData\Local\Temp\RtmpaG2SSB\remotes22587dbc4218\C4EcoSolutions-sobir-6950b9e/DESCRIPTION'
     FALSE       -  preparing 'sobir':
     FALSE    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   <U+2713>  checking DESCRIPTION meta-information
     FALSE       -  checking for LF line-endings in source and make files and shell scripts
     FALSE       -  checking for empty or unneeded directories
-    FALSE   -  looking to see if a 'data/datalist' file should be added
-    FALSE   -  building 'sobir_0.1.1.9000.tar.gz'
+    FALSE       -  looking to see if a 'data/datalist' file should be added
+    FALSE -  building 'sobir_0.1.1.9000.tar.gz'
     FALSE      
     FALSE 
 
@@ -116,7 +116,9 @@ dat_within %>%
   theme_bw() 
 ```
 
-![](sobir-brief-explainer_files/figure-gfm/Visualise%20simulated%20data-1.png)<!-- -->
+![](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes/images/Visualise%20simulated%20data-1.png)<!-- -->
+
+
 
 To see what the package is assessing in the analysis, the boundaries and
 no-data zones can be extracted and visualised using the below functions.
@@ -146,7 +148,7 @@ set.seed(1)
 perm_within = perm_area(dat_within$x, dat_within$y, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_within, histogram = F)
+perm_plot(perm_within, histogram = T)
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis%20on%20artificial%20data-1.png)<!-- -->
@@ -166,7 +168,7 @@ set.seed(1)
 perm_random = perm_area(dat_sim$x, dat_sim$y, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_random, histogram = F)
+perm_plot(perm_random, histogram = T)
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Run%20the%20analysis%20on%20random%20data-1.png)<!-- -->
@@ -220,7 +222,7 @@ set.seed(1)
 perm_sankaran = perm_area(dat_sankaran$MAP, dat_sankaran$Cover, nsim = 100, boundary = "topl")
 
 # Plot the results
-perm_plot(perm_sankaran, histogram = F)
+perm_plot(perm_sankaran, histogram = T)
 ```
 
 ![](sobir-brief-explainer_files/figure-gfm/Run%20the%20Sankaran%20analysis-1.png)<!-- -->
@@ -291,5 +293,5 @@ random can both be rejected as the p-values are both less than 0.05.
 
 ## Vignettes
 
-[sobir: get
-started](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes)
+[sobir: brief
+explainer](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes)

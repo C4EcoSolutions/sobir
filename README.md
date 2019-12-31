@@ -116,7 +116,7 @@ dat_within %>%
   theme_bw() 
 ```
 
-![](https://github.com/C4EcoSolutions/sobir/tree/master/vignettes/images/Visualise%20simulated%20data-1.png)<!-- -->
+![](https://raw.githubusercontent.com/C4EcoSolutions/sobir/tree/master/vignettes/images/Visualise%20simulated%20data-1.png)<!-- -->
 
 
 

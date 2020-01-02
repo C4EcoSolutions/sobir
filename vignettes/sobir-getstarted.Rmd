@@ -24,7 +24,7 @@ The package has been made publically available, but is still under ongoing devel
 
 ## Installation
 
-`sobir` is available on [CRAN](https://cran.r-project.org/) (version 0.1.0). It's **not** recommended that this version be used, however, as there are some important improvements and bug fixes in version 0.1.1.9000, which can be installed using `devtools`. 
+`sobir` is available on [CRAN](https://cran.r-project.org/) (version 0.1.1). It's **not** recommended that this version be used, however, as there are some important improvements and bug fixes in version 0.1.2, which can be installed using `devtools`. The updated version will be submitted to CRAN once the submission server team returns from vacation. 
 
 ```{r install github version, comment=F, eval=F}
 

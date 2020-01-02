@@ -26,7 +26,7 @@ The package has been made publically available, but is still under ongoing devel
 
 `sobir` is available on [CRAN](https://cran.r-project.org/) (version 0.1.0). It's **not** recommended that this version be used, however, as there are some important improvements and bug fixes in version 0.1.1.9000, which can be installed using `devtools`. 
 
-```{r install github version, comment=F}
+```{r install github version, comment=F, eval=F}
 
 library("devtools")
 devtools::install_github("C4EcoSolutions/sobir")
@@ -143,7 +143,7 @@ The first dataset is sourced from a Nature article on the determinants of woody 
 
 ```{r Import Sankaran data}
 
-dat_sankaran = read.csv(system.file("data", "WoodyAfrica.csv", package = "sobir"))
+data("WoodyAfrica",package = "sobir")
 
 ```
 
@@ -154,7 +154,7 @@ The data were analysed using a 99th quantile piece-wise linear regression to ide
 ```{r Extract and visualise Sankaran boundary points}
 
 # Extract boundary points (bpts object)
-bpts_sankaran = extract_bpts(dat_sankaran$MAP, dat_sankaran$Cover)
+bpts_sankaran = extract_bpts(WoodyAfrica$MAP, WoodyAfrica$Cover)
 
 # Plot the boundaries
 bpts_plot(bpts_sankaran, xlab = "MAP (mm)", ylab = "Woody Cover (%)") 
@@ -167,7 +167,7 @@ The top-left boundary is hypothesised to be experiencing a significant constrain
 
 # Run the permuation test
 set.seed(1)
-perm_sankaran = perm_area(dat_sankaran$MAP, dat_sankaran$Cover, nsim = 100, boundary = "topl")
+perm_sankaran = perm_area(WoodyAfrica$MAP, WoodyAfrica$Cover, nsim = 100, boundary = "topl")
 
 # Plot the results
 perm_plot(perm_sankaran, histogram = T)
@@ -182,7 +182,7 @@ The second empirical dataset is sourced from a PLoS ONE article on the effects o
 
 ```{r Import Mills data}
 
-dat_mills = read.csv(system.file("data", "WoodyTowoomba.csv", package = "sobir"))
+data("WoodyTowoomba", package = "sobir")
 
 ```
 
@@ -192,11 +192,11 @@ The data were statistically analysed by aggregating the tree abundance into four
 
 ```{r Extract and visualise Mills boundary points}
 
-dat_mills = dat_mills %>%
+WoodyTowoomba = WoodyTowoomba %>%
    mutate(MnCu = Mn/Cu)
 
 # Extract boundary points (bpts object)
-bpts_mills_mncu = extract_bpts(dat_mills$MnCu, dat_mills$TreeNum)
+bpts_mills_mncu = extract_bpts(WoodyTowoomba$MnCu, WoodyTowoomba$TreeNum)
 
 # Plot the boundaries
 bpts_plot(bpts_mills_mncu, xlab = "Soil Mn/Cu", ylab = "Tree abundance") 
@@ -209,8 +209,8 @@ In accordance with the Catabolic Theory, it was inferred that there were boundar
 
 # Run the permuation tests
 set.seed(1)
-perm_mills_topl = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "topl")
-perm_mills_botr = perm_area(dat_mills$MnCu, dat_mills$TreeNum, nsim = 100, boundary = "botr")
+perm_mills_topl = perm_area(WoodyTowoomba$MnCu, WoodyTowoomba$TreeNum, nsim = 100, boundary = "topl")
+perm_mills_botr = perm_area(WoodyTowoomba$MnCu, WoodyTowoomba$TreeNum, nsim = 100, boundary = "botr")
 
 # Plot the results
 perm_plot(perm_mills_topl, histogram = T)

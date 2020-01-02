@@ -12,7 +12,6 @@
 #' @return a ggplot2 histogram and p-value for each no-data zone
 #' @import statmod
 #' @import dplyr
-#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -22,6 +21,8 @@
 #' perm_plot(permExample, 100)
 perm_plot = function(perm, histogram = TRUE) {
 
+  bounds <- NULL
+  
   dat_perm = perm$data
   nsim = perm$nsim
   n = perm$n
@@ -61,12 +62,12 @@ perm_plot = function(perm, histogram = TRUE) {
   }
 
   if(histogram == F) {
-    suppressWarnings(ggplot(data = dat_perm[dat_perm$source == "sim",], aes(x = rescale, ..scaled..)) +
+    suppressWarnings(ggplot(data = dat_perm[dat_perm$source == "sim",], aes(x = rescale)) +
                        # geom_histogram(bins = 10, fill = "white", col = "darkgrey") +
                        geom_density(fill = "grey") +
                        geom_vline(aes(xintercept = rescale), data = OD, col = "black", linetype = 2) +
                        facet_wrap( ~ polygon, scales = "free", labeller = poly_labeller) +
-                       labs(x = "Relative area", y = "Scaled density",
+                       labs(x = "Relative area", y = "Density",
                             title = paste0("Sample size: ", n, "\nRandom permutations: ",nsim)) +
                        theme_bw()
     )

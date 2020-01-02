@@ -4,7 +4,7 @@
 \alias{perm_area}
 \title{Calculate the permuted area}
 \usage{
-perm_area(xdat, ydat, nsim)
+perm_area(xdat, ydat, nsim, boundary = "topl", method = "auto")
 }
 \arguments{
 \item{xdat}{a vector of the independent data}
@@ -12,6 +12,10 @@ perm_area(xdat, ydat, nsim)
 \item{ydat}{a vector of the dependent data}
 
 \item{nsim}{the number of simulations to run}
+
+\item{boundary}{character string indicating the boundary to test (default is "topl"). Possible values are "topl" (top-left), "topr" (top-right), "botl" (bottom-left), "botr" (bottom-right) or "all".}
+
+\item{method}{character string indicating computation method (default is "auto"). Possible values are "exact", "approximate" or "auto".}
 }
 \value{
 a perm table that can be plotted directly using perm_plot()

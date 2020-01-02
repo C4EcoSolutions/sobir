@@ -8,8 +8,13 @@ Description: Separates significant boundary constraints in a dataset from illusi
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
-Suggests: testthat
+RoxygenNote: 7.0.2
+Depends:
+    R (>= 2.10)
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
 Imports: 
     ggplot2, 
     raster, 
@@ -19,4 +24,8 @@ Imports:
     statmod,
     tidyr,
     dplyr,
-    DescTools
+    stringr,
+    DescTools,
+    devtools,
+    usethis
+VignetteBuilder: knitr

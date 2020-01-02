@@ -17,8 +17,4 @@
 #' 
 #' @source \url{https://doi.org/10.1038/nature04070}
 #' 
-#' @examples 
-#' \donttest{dat = read.csv(system.file("data", "WoodyAfrica.csv", package = "sobir"))
-#' plot(dat$MAP, dat$Cover)}
-#'
 "WoodyAfrica"

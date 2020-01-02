@@ -14,9 +14,8 @@
 #' @import tidyr
 #' @import stringr
 #' @import dplyr
-#' @import DescTools
-#' @import scales
-#' @importFrom rlang .data
+#' @importFrom DescTools AUC
+#' @importFrom scales rescale
 #' @export
 #'
 #' @examples
@@ -25,6 +24,8 @@
 #' calc_area(a,b)
 calc_area = function(xdat, ydat){
 
+  legend <- x <- y <- type <- label <- NULL
+  
   # Extract boundary points
   extracted = extract_bpts(xdat, ydat)
   

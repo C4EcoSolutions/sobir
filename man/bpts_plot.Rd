@@ -4,8 +4,15 @@
 \alias{bpts_plot}
 \title{Boundary Points Plot}
 \usage{
-bpts_plot(bpts, xlab = "", ylab = "", export_name = "bpts plot.png",
-  save_plot = FALSE, colour = TRUE)
+bpts_plot(
+  bpts,
+  xlab = "x",
+  ylab = "y",
+  export_name = "bpts plot.png",
+  save_plot = FALSE,
+  colour = TRUE,
+  legend.position = "right"
+)
 }
 \arguments{
 \item{bpts}{your bpts object created by the extract_bpts() function.}
@@ -19,6 +26,8 @@ bpts_plot(bpts, xlab = "", ylab = "", export_name = "bpts plot.png",
 \item{save_plot}{TRUE or FALSE to save the plot. Defaults to FALSE.}
 
 \item{colour}{TRUE or FALSE to plot using colour or in black and white. Defaults to TRUE.}
+
+\item{legend.position}{Define the position of the ggplot legend, as per ggplot capability. Default to "right".}
 }
 \value{
 a ggplot2 scatterplot

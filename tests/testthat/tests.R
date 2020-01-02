@@ -6,7 +6,7 @@ test_that("extract_bpts should be able to generate a bpts table from two vectors
   a = rnorm(10,0,1)
   b = rnorm(10,0,1)
   bpts <- extract_bpts(a,b)
-  expect_equal(bpts[c(1,16,25),4], factor(c(1,5,6), levels = 0:5))
+  expect_equal(bpts[c(1,16,25),4], factor(c(1,5,6), levels = 0:6))
 })
 
 context("bpts_plot")

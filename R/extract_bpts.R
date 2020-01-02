@@ -11,7 +11,6 @@
 #'
 #' @return a data frame of the two vectors with the boundary points and other relevant data labelled.
 #' @import dplyr
-#' @importFrom rlang .data
 #' @importFrom stats na.omit
 #' @export
 #'

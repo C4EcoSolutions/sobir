@@ -13,11 +13,11 @@
 #' @param export_name the filename of your plot if you choose to export it. Include .png suffix. Defaults to "bpts plot.png" if save_plot = TRUE.
 #' @param save_plot TRUE or FALSE to save the plot. Defaults to FALSE.
 #' @param colour TRUE or FALSE to plot using colour or in black and white. Defaults to TRUE.
+#' @param legend.position Define the position of the ggplot legend, as per ggplot capability. Default to "right".
 #'
 #' @return a ggplot2 scatterplot
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -28,6 +28,7 @@
 
 bpts_plot = function(bpts, xlab = "x", ylab = "y", export_name = "bpts plot.png", save_plot = FALSE, colour = TRUE, legend.position = "right"){
 
+  legend <- x <- y <- type <- NULL
   
  bpts_baseplot = ggplot(data = filter(bpts, !legend %in% c(0, 6)), aes(x, y)) +
     

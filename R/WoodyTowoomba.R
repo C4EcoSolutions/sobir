@@ -18,9 +18,5 @@
 #' @references Mills et al. (2017) Effects of anabolic and catabolic nutrients on woody plant encroachment after long-term experimental fertilization in a South African savanna. PLoS ONE 12(6), p1-24.
 #' 
 #' @source \url{https://doi.org/10.1371/journal.pone.0179848}
-#' 
-#' @examples 
-#' \donttest{dat = read.csv(system.file("data", "WoodyTowoomba.csv", package = "sobir"))
-#' plot(dat$pH, dat$TreeNum)}
 #'
 "WoodyTowoomba"

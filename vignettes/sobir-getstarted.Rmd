@@ -1,10 +1,10 @@
 ---
 title: "sobir: Significance of Boundary Lines in R"
-date: "31/12/2019"
-output: 
-  html_document:
-    toc: TRUE
-    toc_depth: 4
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getstarted}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, echo = F}
@@ -29,7 +29,7 @@ The package has been made publically available, but is still under ongoing devel
 ```{r install github version, comment=F}
 
 library("devtools")
-install_github("C4EcoSolutions/sobir")
+devtools::install_github("C4EcoSolutions/sobir")
 
 ```
 
